@@ -1,0 +1,5 @@
+#!/bin/sh
+/usr/bin/sudo -k '/Library/Application Support/LiteLLM/runtime/python/bin/python3.12' -I '/Library/Application Support/LiteLLM/libexec/admin.py' "$@"
+result=$?
+/usr/bin/sudo -k
+exit "$result"

@@ -1,0 +1,17 @@
+.build/
+__pycache__/
+*.pyc
+.DS_Store
+.env
+.env.*
+!.env.example
+
+# Keep the original local implementation and migration work out of the public kit.
+/bin/
+/config/
+/examples/
+/libexec/
+/scripts/
+/requirements.in
+/requirements.lock
+/docs/litellm-gateway-setup.zip

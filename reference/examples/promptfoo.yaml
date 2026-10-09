@@ -1,0 +1,13 @@
+description: Local gateway example
+prompts:
+  - 'Explain {{topic}} in one sentence.'
+providers:
+  - id: litellm:REPLACE_WITH_EXACT_PUBLIC_MODEL_NAME
+    config:
+      apiBaseUrl: http://127.0.0.1:4000
+      max_tokens: 100
+tests:
+  - vars:
+      topic: rainbows
+# Supply LITELLM_API_KEY explicitly for the authorized session before running.
+# This is a limited virtual key. Provider credentials remain inside the gateway.

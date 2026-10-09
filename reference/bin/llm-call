@@ -1,0 +1,30 @@
+#!/usr/bin/python3 -I
+"""Read a JSON request from stdin and use only a limited client key."""
+import json
+import os
+import sys
+import urllib.error
+import urllib.request
+
+if len(sys.argv) > 2 or (len(sys.argv) == 2 and sys.argv[1] not in ("agents", "promptfoo")):
+    sys.exit("Usage: llm-call [agents|promptfoo] < request.json")
+client = sys.argv[1] if len(sys.argv) == 2 else "agents"
+key = os.environ.get("LITELLM_API_KEY")
+if not key:
+    from pathlib import Path
+    key = (Path.home() / ".config/llm-gateway" / f"{client}.key").read_text().strip()
+data = json.loads(sys.stdin.read())
+request = urllib.request.Request("http://127.0.0.1:4000/v1/chat/completions", data=json.dumps(data).encode(),
+    headers={"Authorization": "Bearer " + key, "Content-Type": "application/json"})
+try:
+    # Disable user-configured HTTP proxies so the local key cannot be forwarded.
+    with urllib.request.build_opener(urllib.request.ProxyHandler({})).open(request, timeout=360) as response:
+        if data.get("stream"):
+            for line in response:
+                sys.stdout.buffer.write(line)
+                sys.stdout.buffer.flush()
+        else:
+            sys.stdout.buffer.write(response.read() + b"\n")
+except urllib.error.HTTPError as error:
+    sys.stderr.buffer.write(error.read() + b"\n")
+    sys.exit(1)

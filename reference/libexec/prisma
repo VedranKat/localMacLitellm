@@ -1,0 +1,2 @@
+#!/bin/sh
+exec '/Library/Application Support/LiteLLM/runtime/python/bin/python3.12' -I '/Library/Application Support/LiteLLM/libexec/prisma.py' "$@"

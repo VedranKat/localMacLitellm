@@ -1,0 +1,4 @@
+# Runtime only; resolve to requirements.lock with hashes before installation.
+litellm[proxy]==1.104.0
+psycopg[binary]>=3.2,<4
+prisma==0.15.0
